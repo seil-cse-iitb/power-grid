@@ -64,9 +64,6 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('Org1MSP.admin')"
-            Endorsement:
-                Type: Signature
-                Rule: "OR('Org1MSP.peer')"
 
         # leave this flag set to true.
         AnchorPeers:
@@ -99,9 +96,6 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('Org2MSP.admin')"
-            Endorsement:
-                Type: Signature
-                Rule: "OR('Org2MSP.peer')"
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
@@ -109,7 +103,130 @@ Organizations:
             # encoded in the genesis block in the Application section context
             - Host: peer0.org2.example.com
               Port: 9051
+    
+    - &Org3
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: Org3MSP
 
+        # ID to load the MSP definition as
+        ID: Org3MSP
+
+        MSPDir: crypto-config/peerOrganizations/org3.example.com/msp
+
+        # Policies defines the set of policies at this level of the config tree
+        # For organization policies, their canonical path is usually
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org3MSP.admin', 'Org3MSP.peer', 'Org3MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org3MSP.admin', 'Org3MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org3MSP.admin')"
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.org3.example.com
+              Port: 10051
+
+    - &Org4
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: Org4MSP
+
+        # ID to load the MSP definition as
+        ID: Org4MSP
+
+        MSPDir: crypto-config/peerOrganizations/org4.example.com/msp
+
+        # Policies defines the set of policies at this level of the config tree
+        # For organization policies, their canonical path is usually
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org4MSP.admin', 'Org4MSP.peer', 'Org4MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org4MSP.admin', 'Org4MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org4MSP.admin')"
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.org4.example.com
+              Port: 11051
+    
+    - &Org5
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: Org5MSP
+
+        # ID to load the MSP definition as
+        ID: Org5MSP
+
+        MSPDir: crypto-config/peerOrganizations/org5.example.com/msp
+
+        # Policies defines the set of policies at this level of the config tree
+        # For organization policies, their canonical path is usually
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org5MSP.admin', 'Org5MSP.peer', 'Org5MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org5MSP.admin', 'Org5MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org5MSP.admin')"
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.org5.example.com
+              Port: 12051
+
+    - &Org6
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: Org6MSP
+
+        # ID to load the MSP definition as
+        ID: Org6MSP
+
+        MSPDir: crypto-config/peerOrganizations/org6.example.com/msp
+
+        # Policies defines the set of policies at this level of the config tree
+        # For organization policies, their canonical path is usually
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org6MSP.admin', 'Org6MSP.peer', 'Org6MSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org6MSP.admin', 'Org6MSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org6MSP.admin')"
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.org6.example.com
+              Port: 13051
 ################################################################################
 #
 #   SECTION: Capabilities
@@ -157,13 +274,9 @@ Capabilities:
     # used with prior release orderers.
     # Set the value of the capability to true to require it.
     Application: &ApplicationCapabilities
-        # V2.0 for Application enables the new non-backwards compatible
-        # features and fixes of fabric v2.0.
-        V2_0: true
         # V1.3 for Application enables the new non-backwards compatible
-        # features and fixes of fabric v1.3 (note, this need not be set if
-        # later version capabilities are set)
-        V1_3: false
+        # features and fixes of fabric v1.3.
+        V1_3: true
         # V1.2 for Application enables the new non-backwards compatible
         # features and fixes of fabric v1.2 (note, this need not be set if
         # later version capabilities are set)
@@ -200,12 +313,6 @@ Application: &ApplicationDefaults
         Admins:
             Type: ImplicitMeta
             Rule: "MAJORITY Admins"
-        LifecycleEndorsement:
-            Type: ImplicitMeta
-            Rule: "MAJORITY Endorsement"
-        Endorsement:
-            Type: ImplicitMeta
-            Rule: "MAJORITY Endorsement"
 
     Capabilities:
         <<: *ApplicationCapabilities
@@ -328,6 +435,10 @@ Profiles:
                 Organizations:
                     - *Org1
                     - *Org2
+                    - *Org3
+                    - *Org4
+                    - *Org5
+                    - *Org6
     TwoOrgsChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
@@ -336,6 +447,10 @@ Profiles:
             Organizations:
                 - *Org1
                 - *Org2
+                - *Org3
+                - *Org4
+                - *Org5
+                - *Org6
             Capabilities:
                 <<: *ApplicationCapabilities
 
